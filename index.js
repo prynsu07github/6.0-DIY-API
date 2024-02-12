@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import jokes from "./jokes";
+import jokes from "./jokes.js";
 
 const app = express();
 const port = 3000;
@@ -41,6 +41,17 @@ app.get("/filter", (req, res) => {
   }
 });
 
+app.post('/joke' , (req, res)=>{
+  const newJoke = {
+    id : jokes.length+1,
+    jokeText : req.body.joke,
+    jokeType:req.body.type
+  }
+  jokes.push(newJoke)
+  res.json({
+    message:"Your Joke added successfully!"
+  })
+})
 
 app.listen(port, () => {
   console.log(`Successfully started server on port ${port}.`);
