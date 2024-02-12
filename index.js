@@ -63,12 +63,22 @@ app.put("/joke/:id", (req, res) => {
     jokeText: req.body.joke,
     jokeType: req.body.type,
   };
-  console.log(updatedJoke)
-  const jokeIndex = jokes.findIndex(joke => joke.id === id)
-  jokes[jokeIndex] = updatedJoke
+  const jokeIndex = jokes.findIndex((joke) => joke.id === id);
+  jokes[jokeIndex] = updatedJoke;
   res.json({
-    message:"Joke Replaced successfully!"
+    message: "Joke Replaced successfully!",
   });
+});
+
+app.patch("/joke/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const jokeIndex = jokes.findIndex((joke) => joke.id === id);
+  const joke = jokes.find((joke) => joke.id === id);
+  req.body.joke? joke["jokeText"] = req.body.joke: joke["jokeType"] = req.body.type
+  jokes[jokeIndex] = joke
+  res.json({
+    message: "Joke Updated successfully!",
+  })
 });
 
 app.listen(port, () => {
