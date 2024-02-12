@@ -27,12 +27,15 @@ app.get("/random/:id", (req, res) => {
 app.get("/filter", (req, res) => {
   try {
     const type = req.query.type;
-    const foundJokes = jokes.filter((joke) => joke.jokeType.toLocaleLowerCase() === type.toLocaleLowerCase());
-    if(foundJokes.length>0) res.json(foundJokes)
-    else res.json({
-      message:"Joke Not Found",
-      code: 404
-    })
+    const foundJokes = jokes.filter(
+      (joke) => joke.jokeType.toLocaleLowerCase() === type.toLocaleLowerCase()
+    );
+    if (foundJokes.length > 0) res.json(foundJokes);
+    else
+      res.json({
+        message: "Joke Not Found",
+        code: 404,
+      });
   } catch {
     res.json({
       message: "Something Goes Wrong",
@@ -41,19 +44,33 @@ app.get("/filter", (req, res) => {
   }
 });
 
-app.post('/joke' , (req, res)=>{
+app.post("/joke", (req, res) => {
   const newJoke = {
-    id : jokes.length+1,
-    jokeText : req.body.joke,
-    jokeType:req.body.type
-  }
-  jokes.push(newJoke)
+    id: jokes.length + 1,
+    jokeText: req.body.joke,
+    jokeType: req.body.type,
+  };
+  jokes.push(newJoke);
   res.json({
-    message:"Your Joke added successfully!"
-  })
-})
+    message: "Your Joke added successfully!",
+  });
+});
+
+app.put("/joke/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const updatedJoke = {
+    id: id,
+    jokeText: req.body.joke,
+    jokeType: req.body.type,
+  };
+  console.log(updatedJoke)
+  const jokeIndex = jokes.findIndex(joke => joke.id === id)
+  jokes[jokeIndex] = updatedJoke
+  res.json({
+    message:"Joke Replaced successfully!"
+  });
+});
 
 app.listen(port, () => {
   console.log(`Successfully started server on port ${port}.`);
 });
-
