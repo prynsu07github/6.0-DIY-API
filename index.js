@@ -74,11 +74,24 @@ app.patch("/joke/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const jokeIndex = jokes.findIndex((joke) => joke.id === id);
   const joke = jokes.find((joke) => joke.id === id);
-  req.body.joke? joke["jokeText"] = req.body.joke: joke["jokeType"] = req.body.type
-  jokes[jokeIndex] = joke
+  req.body.joke
+    ? (joke["jokeText"] = req.body.joke)
+    : (joke["jokeType"] = req.body.type);
+  jokes[jokeIndex] = joke;
   res.json({
     message: "Joke Updated successfully!",
-  })
+  });
+});
+
+app.delete("/joke/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const jokeIndex = jokes.findIndex((joke) => joke.id === id);
+  if (jokeIndex > -1) {
+    jokes.splice(jokeIndex, 1);
+  }
+  res.json({
+    message: "Joke deleted successfully!",
+  });
 });
 
 app.listen(port, () => {
