@@ -122,6 +122,26 @@ app.delete("/joke/:id", (req, res) => {
   }
 });
 
+app.delete('/all' , (req, res) => {
+  try{
+    const userKey = req.query.key;
+    if(userKey === masterKey){
+      //jokes.splice(0 , jokes.length)
+      jokes = []
+      res.status(200).json({
+        message:"Successfully executed the task."
+      })
+    }
+    else{
+      res.status(404).json({message:"Your are not authorised user."})
+    }
+  }
+  catch(err){
+    console.log(err)
+    res.status(500).json({message:"Something went wrong!"})
+  }
+});
+
 app.listen(port, () => {
   console.log(`Successfully started server on port ${port}.`);
 });
